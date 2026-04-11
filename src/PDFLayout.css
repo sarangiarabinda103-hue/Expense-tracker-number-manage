@@ -1,0 +1,217 @@
+/* Professional A4 PDF Layout Styles */
+
+.a4 {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
+  background: white;
+  color: black;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+/* Print optimization */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .a4 {
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
+/* PDF Title Section */
+.pdf-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+  color: #1f2937;
+}
+
+.pdf-subtitle {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 30px 0;
+  color: #6b7280;
+}
+
+.pdf-date {
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 30px 0;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* Cards Section */
+.cards {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  justify-content: space-between;
+}
+
+.card {
+  flex: 1;
+  padding: 20px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  opacity: 0.9;
+}
+
+.card-content h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.card-value {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+}
+
+.card-label {
+  font-size: 14px;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* PDF Sections */
+.pdf-section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  color: #1f2937;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
+}
+
+/* Table Styles */
+.pdf-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+}
+
+.pdf-table th {
+  background: #f8fafc;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #e5e7eb;
+  color: #374151;
+  font-size: 14px;
+}
+
+.pdf-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 12px;
+}
+
+.pdf-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.date-row {
+  background: #f1f5f9;
+}
+
+.date-header {
+  background: #374151;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* Black & White Mode */
+.a4.black-white-mode {
+  background: white !important;
+  color: black !important;
+}
+
+.a4.black-white-mode .card {
+  background: white !important;
+  border: 2px solid black !important;
+  color: black !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.a4.black-white-mode .pdf-title,
+.a4.black-white-mode .section-title {
+  color: black !important;
+}
+
+.a4.black-white-mode .pdf-table th {
+  background: white !important;
+  color: black !important;
+  border-color: black !important;
+}
+
+.a4.black-white-mode .pdf-table td {
+  color: black !important;
+  border-color: black !important;
+}
+
+.a4.black-white-mode .date-header {
+  background: black !important;
+  color: white !important;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .a4 {
+    padding: 15mm;
+    font-size: 11px;
+  }
+  
+  .cards {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  .card-icon {
+    font-size: 1.5rem;
+  }
+  
+  .card-value {
+    font-size: 20px;
+  }
+  
+  .pdf-table {
+    font-size: 10px;
+  }
+  
+  .pdf-table th,
+  .pdf-table td {
+    padding: 8px;
+  }
+}

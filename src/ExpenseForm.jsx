@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, memo } from 'react'
 
-const ExpenseForm = ({ onAddExpense }) => {
+const ExpenseForm = memo(function ExpenseForm({ onAddExpense }) {
   const [title, setTitle] = useState('')
   const [amount, setAmount] = useState('')
   const titleRef = useRef()
@@ -44,6 +44,6 @@ const ExpenseForm = ({ onAddExpense }) => {
       <button type="submit">Add Expense</button>
     </form>
   )
-}
+})
 
 export default ExpenseForm

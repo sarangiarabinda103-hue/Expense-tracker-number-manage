@@ -1,7 +1,7 @@
 import React from 'react'
 import Expenseitem from './Expenseitem'
 
-const ExpenseList = ({ expenses, onDeleteExpense }) => {
+const ExpenseList = React.memo(function ExpenseList({ expenses, onDeleteExpense }) {
   if (expenses.length === 0) {
     return <p className="no-expense">No expenses yet. Add one to get started.</p>
   }
@@ -13,6 +13,6 @@ const ExpenseList = ({ expenses, onDeleteExpense }) => {
       ))}
     </div>
   )
-}
+})
 
 export default ExpenseList
