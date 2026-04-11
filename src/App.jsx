@@ -76,11 +76,11 @@ function App() {
           <div className="hero-stats">
             <div className="stat-card color-green">
               <p className="stat-label">This month</p>
-              <p className="stat-value">₹{currentMonthTotal.toFixed(2)}</p>
+              <p className="stat-value">Rs{currentMonthTotal.toFixed(2)}</p>
             </div>
             <div className="stat-card color-blue">
               <p className="stat-label">Total (6 months)</p>
-              <p className="stat-value">₹{totalExpense.toFixed(2)}</p>
+              <p className="stat-value">Rs{totalExpense.toFixed(2)}</p>
             </div>
           </div>
         </section>
@@ -96,7 +96,7 @@ function App() {
               monthlyData.map((month, idx) => (
                 <div key={idx} className={`monthly-card ${idx % 2 === 0 ? 'color-blue' : 'color-green'}`}>
                   <p className="month-name">{month.name}</p>
-                  <p className="month-total">₹{month.total.toFixed(2)}</p>
+                  <p className="month-total">Rs{month.total.toFixed(2)}</p>
                   <p className="month-count">{month.count} expenses</p>
                 </div>
               ))
