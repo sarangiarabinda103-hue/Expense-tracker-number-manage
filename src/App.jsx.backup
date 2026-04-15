@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, Suspense, lazy } from 'react'
-import { Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import './App.css'
 import Spinner from './Spinner'
@@ -32,7 +32,7 @@ function getMonthlyBreakdown(data) {
 
 function AppContent() {
   const navigate = useNavigate()
-
+  
   // Memoize expensive localStorage operations
   const [expenses, setExpenses] = useState(() => {
     const stored = localStorage.getItem('expenses')
@@ -86,92 +86,32 @@ function AppContent() {
     const updated = expenses.filter((expense) => expense.id !== id)
     setExpenses(updated)
     setFilteredExpenses((prev) => prev.filter((expense) => expense.id !== id))
-  }, [expenses])
+  }, [expenses])}
 
-  return (
-    <AppUI
-      expenses={expenses}
-      filteredExpenses={filteredExpenses}
-      monthlyData={monthlyData}
-      totalExpense={totalExpense}
-      currentMonthTotal={currentMonthTotal}
-      handleFilter={handleFilter}
-      handleMonthClick={handleMonthClick}
-      addExpense={addExpense}
-      deleteExpense={deleteExpense}
-    />
-  )
-}
-
-function AppUI({
-  expenses,
-  filteredExpenses,
-  monthlyData,
-  totalExpense,
-  currentMonthTotal,
-  handleFilter,
-  handleMonthClick,
-  addExpense,
-  deleteExpense
+function AppUI({ 
+  expenses, 
+  filteredExpenses, 
+  monthlyData, 
+  totalExpense, 
+  currentMonthTotal, 
+  handleFilter, 
+  handleMonthClick, 
+  addExpense, 
+  deleteExpense 
 }) {
   return (
     <ThemeProvider>
-      <div className="app">
-        <header className="app-header">
-          <h1>Expense Tracker</h1>
-          <ThemeToggle />
-        </header>
-
-        <main className="app-main">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Suspense fallback={<Spinner />}>
-                  <div className="dashboard">
-                    <div className="summary-cards">
-                      <div className="summary-card">
-                        <h3>Total Expenses</h3>
-                        <p className="amount">${totalExpense.toFixed(2)}</p>
-                      </div>
-                      <div className="summary-card">
-                        <h3>This Month</h3>
-                        <p className="amount">${currentMonthTotal.toFixed(2)}</p>
-                      </div>
-                      <div className="summary-card">
-                        <h3>Total Entries</h3>
-                        <p className="count">{expenses.length}</p>
-                      </div>
-                    </div>
-
-                    <ExpenseForm onAddExpense={addExpense} />
-
-                    <DateFilter
-                      expenses={expenses}
-                      onFilter={handleFilter}
-                    />
-
-                    <ExpenseList
-                      expenses={filteredExpenses}
-                      onDeleteExpense={deleteExpense}
-                      monthlyData={monthlyData}
-                      onMonthClick={handleMonthClick}
-                    />
-                  </div>
-                </Suspense>
-              }
-            />
-            <Route
-              path="/monthly-report"
-              element={
-                <Suspense fallback={<Spinner />}>
-                  <MonthlyReportPage />
-                </Suspense>
-              }
-            />
-          </Routes>
-        </main>
-      </div>
+      <AppUI 
+        expenses={expenses}
+        filteredExpenses={filteredExpenses}
+        monthlyData={monthlyData}
+        totalExpense={totalExpense}
+        currentMonthTotal={currentMonthTotal}
+        handleFilter={handleFilter}
+        handleMonthClick={handleMonthClick}
+        addExpense={addExpense}
+        deleteExpense={deleteExpense}
+      />
     </ThemeProvider>
   )
 }
