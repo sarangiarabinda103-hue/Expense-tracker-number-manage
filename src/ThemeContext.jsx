@@ -19,16 +19,14 @@ export function ThemeProvider({ children }) {
     // Update localStorage when theme changes
     localStorage.setItem('app-theme', theme)
 
-    // Update document root with theme
-    const root = document.documentElement
-    root.setAttribute('data-theme', theme)
-
-    // Update color-scheme CSS property
-    if (theme === 'dark') {
-      root.style.colorScheme = 'dark'
-    } else {
-      root.style.colorScheme = 'light'
-    }
+    // Use requestAnimationFrame to prevent layout thrashing
+    requestAnimationFrame(() => {
+      const root = document.documentElement
+      root.setAttribute('data-theme', theme)
+      
+      // Update color-scheme without forcing reflow
+      root.style.colorScheme = theme === 'dark' ? 'dark' : 'light'
+    })
   }, [theme])
 
   // Listen for system theme changes
