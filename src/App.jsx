@@ -3,6 +3,8 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import './App.css'
 import Spinner from './Spinner'
+import { ThemeProvider } from './ThemeContext'
+import { useTheme } from './useTheme'
 
 // Lazy load ALL components to reduce initial bundle size
 const ExpenseForm = lazy(() => import('./ExpenseForm'))
@@ -28,8 +30,9 @@ function getMonthlyBreakdown(data) {
   return Object.values(months).sort((a, b) => b.monthKey.localeCompare(a.monthKey))
 }
 
-function App() {
+function AppContent() {
   const navigate = useNavigate()
+  const { toggleTheme } = useTheme()
   
   // Memoize expensive localStorage operations
   const [expenses, setExpenses] = useState(() => {
@@ -104,6 +107,16 @@ function App() {
                 <p className="brand-subtitle">Track your spending.</p>
               </div>
             </div>
+            <nav className="app-nav">
+              <button
+                onClick={toggleTheme}
+                className="theme-toggle"
+                title="Toggle dark/light mode"
+                aria-label="Toggle theme"
+              >
+                🌙/☀️
+              </button>
+            </nav>
           </header>
 
           <main className="app-container">
@@ -183,6 +196,14 @@ function App() {
         </Suspense>
       } />
     </Routes>
+  )
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   )
 }
 
