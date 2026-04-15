@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, Suspense, lazy } from 'react'
-import { Routes, Route, useNavigate, BrowserRouter } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import './App.css'
 import Spinner from './Spinner'
@@ -178,9 +178,7 @@ function AppUI({
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
+    <AppContent />
   )
 }
 
