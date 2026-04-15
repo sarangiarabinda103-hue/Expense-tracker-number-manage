@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { ThemeContext } from './ThemeContextConfig'
 
 export function ThemeProvider({ children }) {
@@ -48,12 +48,12 @@ export function ThemeProvider({ children }) {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
-  const value = {
+  const value = useMemo(() => ({
     theme,
     toggleTheme,
     isDark: theme === 'dark',
     isLight: theme === 'light',
-  }
+  }), [theme])
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
