@@ -3,8 +3,6 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import './App.css'
 import Spinner from './Spinner'
-import { ThemeProvider } from './ThemeContext'
-import { ThemeToggle } from './ThemeToggle'
 
 // Lazy load ALL components to reduce initial bundle size
 const ExpenseForm = lazy(() => import('./ExpenseForm'))
@@ -30,9 +28,9 @@ function getMonthlyBreakdown(data) {
   return Object.values(months).sort((a, b) => b.monthKey.localeCompare(a.monthKey))
 }
 
-function AppContent() {
+function App() {
   const navigate = useNavigate()
-
+  
   // Memoize expensive localStorage operations
   const [expenses, setExpenses] = useState(() => {
     const stored = localStorage.getItem('expenses')
@@ -89,96 +87,102 @@ function AppContent() {
   }, [expenses])
 
   return (
-    <AppUI
-      expenses={expenses}
-      filteredExpenses={filteredExpenses}
-      monthlyData={monthlyData}
-      totalExpense={totalExpense}
-      currentMonthTotal={currentMonthTotal}
-      handleFilter={handleFilter}
-      handleMonthClick={handleMonthClick}
-      addExpense={addExpense}
-      deleteExpense={deleteExpense}
-    />
-  )
-}
+    <Routes>
+      <Route path="/" element={
+        <div className="page-shell">
+          <header className="app-header">
+            <div className="brand-wrap">
+              <img 
+              src="/expense png.png" 
+              alt="Expense Tracker Logo" 
+              className="brand-mark" 
+              loading="lazy"
+              decoding="async"
+            />
+              <div>
+                <p className="brand-title">Expense Tracker</p>
+                <p className="brand-subtitle">Track your spending.</p>
+              </div>
+            </div>
+          </header>
 
-function AppUI({
-  expenses,
-  filteredExpenses,
-  monthlyData,
-  totalExpense,
-  currentMonthTotal,
-  handleFilter,
-  handleMonthClick,
-  addExpense,
-  deleteExpense
-}) {
-  return (
-    <ThemeProvider>
-      <div className="app">
-        <header className="app-header">
-          <h1>Expense Tracker</h1>
-          <ThemeToggle />
-        </header>
+          <main className="app-container">
+            <section className="hero-card">
+              <div>
+                <h1>Track your <span className="color-blue">expenses</span> easily.</h1>
+                <p className="hero-copy">
+                  Add spending, view totals, keep records.
+                </p>
+              </div>
+              <div className="hero-stats">
+                <div className="stat-card color-green">
+                  <p className="stat-label">This month</p>
+                  <p className="stat-value">Rs{currentMonthTotal.toFixed(2)}</p>
+                </div>
+                <div className="stat-card color-blue">
+                  <p className="stat-label">Total (6 months)</p>
+                  <p className="stat-value">Rs{totalExpense.toFixed(2)}</p>
+                </div>
+              </div>
+            </section>
 
-        <main className="app-main">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Suspense fallback={<Spinner />}>
-                  <div className="dashboard">
-                    <div className="summary-cards">
-                      <div className="summary-card">
-                        <h3>Total Expenses</h3>
-                        <p className="amount">${totalExpense.toFixed(2)}</p>
-                      </div>
-                      <div className="summary-card">
-                        <h3>This Month</h3>
-                        <p className="amount">${currentMonthTotal.toFixed(2)}</p>
-                      </div>
-                      <div className="summary-card">
-                        <h3>Total Entries</h3>
-                        <p className="count">{expenses.length}</p>
-                      </div>
+            <section id="add">
+              <Suspense fallback={<Spinner />}>
+                <ExpenseForm onAddExpense={addExpense} />
+              </Suspense>
+            </section>
+
+            <section id="filter">
+              <Suspense fallback={<Spinner />}>
+                <DateFilter onFilterChange={handleFilter} allExpenses={expenses} />
+              </Suspense>
+            </section>
+
+            <section id="report" className="reports-section">
+              <h2 className="reports-title">Monthly <span className="color-green">Reports</span> <span className="color-yellow">(Last 6 Months)</span></h2>
+              <div className="monthly-grid">
+                {monthlyData.length > 0 ? (
+                  monthlyData.map((month, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`monthly-card ${idx % 2 === 0 ? 'color-blue' : 'color-green'} clickable`}
+                      onClick={() => handleMonthClick(month)}
+                    >
+                      <p className="month-name">{month.name}</p>
+                      <p className="month-total">Rs{month.total.toFixed(2)}</p>
+                      <p className="month-count">{month.count} expenses</p>
+                      <p className="click-hint">Click for details</p>
                     </div>
-
-                    <ExpenseForm onAddExpense={addExpense} />
-
-                    <DateFilter
-                      expenses={expenses}
-                      onFilter={handleFilter}
-                    />
-
-                    <ExpenseList
-                      expenses={filteredExpenses}
-                      onDeleteExpense={deleteExpense}
-                      monthlyData={monthlyData}
-                      onMonthClick={handleMonthClick}
-                    />
+                  ))
+                ) : (
+                  <div className="no-reports">
+                    <p>No expenses yet. Add some expenses to see monthly reports!</p>
                   </div>
-                </Suspense>
-              }
-            />
-            <Route
-              path="/monthly-report"
-              element={
-                <Suspense fallback={<Spinner />}>
-                  <MonthlyReportPage />
-                </Suspense>
-              }
-            />
-          </Routes>
-        </main>
-      </div>
-    </ThemeProvider>
-  )
-}
+                )}
+              </div>
+            </section>
 
-function App() {
-  return (
-    <AppContent />
+            <section>
+              <h3 className="list-title">Your <span className="color-blue">Expenses</span> <span className="color-yellow">({filteredExpenses.length} items)</span></h3>
+              <p className="list-subtitle">Showing filtered expenses</p>
+              <Suspense fallback={<Spinner />}>
+                <ExpenseList expenses={filteredExpenses} onDeleteExpense={deleteExpense} />
+              </Suspense>
+            </section>
+          </main>
+
+          <footer className="app-footer" id="footer">
+            <p className="footer-message">Start <span className="color-green">adding</span> your <span className="color-blue">expenses</span> <span className="color-yellow">today</span>!</p>
+            <p className="footer-bottom">© {new Date().getFullYear()} Expense Tracker</p>
+          </footer>
+        </div>
+      } />
+      <Route path="/monthly-report" element={
+        <Suspense fallback={<Spinner />}>
+          <MonthlyReportPage />
+        </Suspense>
+      } />
+    </Routes>
   )
 }
 
